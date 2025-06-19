@@ -23,6 +23,7 @@ public class MultiplicadorMatricesService {
         for (int fila = 0; fila < filasA; fila++) {
             final int filaActual = fila;
             tareas.add(() -> {
+                //resultado[fila][columna]=∑(A[fila][k]×B[k][columna])
                 for (int columna = 0; columna < columnasB; columna++) {
                     for (int k = 0; k < columnasA; k++) {
                         resultado[filaActual][columna] += matrizA[filaActual][k] * matrizB[k][columna];
