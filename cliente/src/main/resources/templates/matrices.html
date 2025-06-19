@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Multiplicación de Matrices</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<div class="container mt-5">
+  <h1>Multiplicación de Matrices</h1>
+
+  <form th:action="@{/algoritmos/matrices}" th:object="${matricesForm}" method="post">
+    <div class="mb-3">
+      <label for="matrizA" class="form-label">Matriz A (separar valores con espacios y filas con ;):</label>
+      <textarea class="form-control" id="matrizA" th:field="*{matrizA}" rows="3"></textarea>
+      <small class="text-muted">Ejemplo: 1 2;3 4</small>
+    </div>
+    <div class="mb-3">
+      <label for="matrizB" class="form-label">Matriz B (separar valores con espacios y filas con ;):</label>
+      <textarea class="form-control" id="matrizB" th:field="*{matrizB}" rows="3"></textarea>
+      <small class="text-muted">Ejemplo: 5 6;7 8</small>
+    </div>
+    <div class="mb-3">
+      <label for="hilos" class="form-label">Número de hilos:</label>
+      <input type="number" class="form-control" id="hilos" th:field="*{hilos}" min="1">
+    </div>
+    <button type="submit" class="btn btn-primary">Multiplicar</button>
+  </form>
+
+  <div th:if="${resultado}" class="mt-3">
+    <h4>Resultado:</h4>
+    <pre th:text="${resultado}"></pre>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+    // Opcional: Validación del formato de las matrices antes de enviar
+    $('form').submit(function(e) {
+      let matrizA = $('#matrizA').val().trim();
+      let matrizB = $('#matrizB').val().trim();
+
+      if (!validarMatriz(matrizA) || !validarMatriz(matrizB)) {
+        alert('Formato de matriz inválido. Use números separados por espacios y filas separadas por punto y coma (;).');
+        e.preventDefault();
+      }
+    });
+
+    function validarMatriz(matrizStr) {
+      if (!matrizStr) return false;
+      let filas = matrizStr.split(';');
+      if (filas.length === 0) return false;
+
+      let columnas = filas[0].trim().split(/\s+/).length;
+      for (let fila of filas) {
+        let valores = fila.trim().split(/\s+/);
+        if (valores.length !== columnas) return false;
+        for (let val of valores) {
+          if (isNaN(val)) return false;
+        }
+      }
+      return true;
+    }
+  });
+</script>
+</body>
+</html>
